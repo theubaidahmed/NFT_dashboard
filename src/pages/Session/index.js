@@ -9,7 +9,6 @@ import {
     MenuItem,
     Divider,
     Button,
-    Modal,
 } from '@mui/material';
 import DataGrid from '../../components/DataGrid';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
@@ -20,8 +19,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useMenu } from '../../hooks/useMenu';
 import Image from '../../components/Image';
 import SearchBar from '../../components/SearchBar';
-import useModal from '../../hooks/useModal';
-import CreateSession from './components/CreateSession';
 
 const columns = [
     {
@@ -115,12 +112,10 @@ const Index = () => {
         page: 0,
     });
     const [rowCount] = useState(0);
-    const [sessionId, setSessionId] = useState('');
-    const { closeModal, openModal, modalState } = useModal();
 
     return (
         <Container maxWidth='false'>
-            <Box my={3}>
+            <Box pt={3}>
                 <Typography variant='h4' fontWeight={500}>
                     Session
                 </Typography>
@@ -142,29 +137,18 @@ const Index = () => {
                 rowCount={rowCount}
                 slots={{ toolbar: CustomToolbar }}
                 slotProps={{
-                    toolbar: { setFilter, filter, setInterval, openModal, setSessionId },
+                    toolbar: { setFilter, filter, setInterval },
                 }}
                 checkboxSelection
                 components={{
                     Footer: CustomToolbar,
                 }}
             />
-
-            <Modal
-                open={modalState}
-                onClose={closeModal}
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <CreateSession handleClose={closeModal} sessionId={sessionId} />
-            </Modal>
         </Container>
     );
 };
 
-export function CustomToolbar({ setFilter, filter, setInterval, openModal, setSessionId }) {
+export function CustomToolbar({ setFilter, filter, setInterval }) {
     const { anchorEl, openMenu, closeMenu } = useMenu();
     const [dateInterval, setDateInterval] = useState({ from: '', to: '' });
     const [customOption, setCustomOption] = useState(false);
@@ -190,8 +174,8 @@ export function CustomToolbar({ setFilter, filter, setInterval, openModal, setSe
                 <Grid item xs>
                     <SearchBar />
                 </Grid>
-                <Grid item xs={12} sm='auto'>
-                    <Button variant='contained' fullWidth onClick={openModal}>
+                {/* <Grid item xs={12} sm='auto'>
+                    <Button variant='contained' fullWidth>
                         Create Session
                     </Button>
                 </Grid>
@@ -199,13 +183,10 @@ export function CustomToolbar({ setFilter, filter, setInterval, openModal, setSe
                     <Button
                         variant='contained'
                         fullWidth
-                        onClick={() => {
-                            setSessionId('123');
-                            openModal();
-                        }}>
+                       >
                         Edit Session
                     </Button>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} sm='auto'>
                     <IconButton
                         color='text.tertiary'

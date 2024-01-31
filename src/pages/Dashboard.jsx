@@ -7,7 +7,7 @@ import { Box, Divider, Typography } from '@mui/material';
 export default function BasicPie() {
     return (
         <Container maxWidth='false'>
-            <Box my={3}>
+            <Box pt={3}>
                 <Typography variant='h4' fontWeight={500}>
                     Dashboard
                 </Typography>

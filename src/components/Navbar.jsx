@@ -220,7 +220,6 @@ export default function Navbar(props) {
         <Box
             sx={{
                 bgcolor: 'background.default',
-                px: { xs: 0.5, xm: 0 },
                 height: '100dvh',
             }}>
             <AppBar
@@ -246,7 +245,7 @@ export default function Navbar(props) {
                         justifyContent: 'center',
                         position: 'relative',
                         '&': {
-                            minHeight: '64px',
+                            minHeight: '76px',
                             px: { xs: 1, xm: 2 },
                         },
                     }}>
@@ -259,7 +258,7 @@ export default function Navbar(props) {
                                 sx={{
                                     display: { xs: 'inline-flex', xm: 'none' },
                                 }}>
-                                <MenuIcon sx={{ fontSize: '30px' }} />
+                                <MenuIcon sx={{ fontSize: '28px' }} />
                             </IconButton>
                         </Grid>
 
@@ -339,8 +338,7 @@ export default function Navbar(props) {
                     ml: {
                         xm: `${drawerWidth}px`,
                     },
-                    mt: 1,
-                    height: { xs: 'calc(100dvh - 150px)' },
+                    minHeight: { xs: 'calc(100dvh - 76px)' },
                     backgroundColor: 'background.default',
                     borderRadius: '12px',
                     transition: 'ease-in-out 225ms, background-color 0s',

@@ -1,10 +1,10 @@
-import React from "react";
-import { useContext } from "react";
-import { Handler } from "../useForm/";
-import DefaultInput from "./../components/DefaultInput";
+import React from 'react';
+import { useContext } from 'react';
+import { Handler } from '../useForm/';
+import DefaultInput from './../components/DefaultInput';
 
 function Input(props) {
-    const { sx, name, maxLength, minLength, placeholder, type, ...rest } = props;
+    const { name, maxLength, minLength, placeholder, type, ...rest } = props;
     const {
         values,
         errors,
@@ -21,8 +21,8 @@ function Input(props) {
     if (values[name] instanceof Date) {
         const date = values[name];
         const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
 
         value = `${year}-${month}-${day}`;
 

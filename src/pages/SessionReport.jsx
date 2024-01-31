@@ -72,7 +72,7 @@ const SessionReport = () => {
 
     return (
         <Container maxWidth='false'>
-            <Box my={3}>
+            <Box pt={3}>
                 <Typography variant='h4' fontWeight={500}>
                     Session Report
                 </Typography>

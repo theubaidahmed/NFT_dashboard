@@ -67,17 +67,10 @@ export default function Login() {
                         </Typography>
                         <Input
                             variant='outlined'
-                            size='small'
                             fullWidth
                             name='username'
                             placeholder='name@domain.com'
-                            sx={{
-                                mb: 3,
-                                mt: 1,
-                                '& .MuiInputBase-root': {
-                                    p: 0.8,
-                                },
-                            }}
+                            gutterBottom={true}
                         />
                         <Typography variant='subtitle2' sx={{ fontWeight: ' 500' }} gutterBottom>
                             Password
@@ -95,17 +88,10 @@ export default function Login() {
                         <Input
                             type='password'
                             variant='outlined'
-                            size='small'
                             fullWidth
                             name='password'
                             placeholder='contain at least 8 characters'
-                            sx={{
-                                mb: 2,
-                                mt: 1,
-                                '& .MuiInputBase-root': {
-                                    p: 0.8,
-                                },
-                            }}
+                            gutterBottom={true}
                         />
                         <FormControlLabel
                             control={<Checkbox defaultChecked />}

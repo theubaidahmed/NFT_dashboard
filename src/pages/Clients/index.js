@@ -9,7 +9,6 @@ import {
     Divider,
     Button,
     Grid,
-    Modal,
 } from '@mui/material';
 import DataGrid from '../../components/DataGrid';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
@@ -18,11 +17,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useMenu } from '../../hooks/useMenu';
-import useModal from '../../hooks/useModal';
 import Image from '../../components/Image';
 import { columns, rows } from '../../data/sidebarLinks';
 import SearchBar from '../../components/SearchBar';
-import AddClient from './components/AddClient';
+import { useNavigate } from 'react-router-dom';
+import Add from '@mui/icons-material/Add';
 
 const Index = () => {
     const [loading] = useState(false);
@@ -32,13 +31,12 @@ const Index = () => {
         pageSize: 5,
         page: 0,
     });
-    const { closeModal, openModal, modalState } = useModal();
-    const [clientId, setClientId] = useState('');
     const [rowCount] = useState(0);
+    const navigate = useNavigate();
 
     return (
         <Container maxWidth='false'>
-            <Box my={3}>
+            <Box pt={3}>
                 <Typography variant='h4' fontWeight={500}>
                     Clients
                 </Typography>
@@ -55,36 +53,28 @@ const Index = () => {
                 paginationMode='server'
                 pageSizeOptions={[5, 10, 50, 100, 1000]}
                 autoHeight
-                disableSelectionOnClick
+                disableRowSelectionOnClick={true}
+                onRowClick={data => navigate(`/clients/${data.id}`)}
                 loading={loading}
                 rowCount={rowCount}
                 slots={{ toolbar: CustomToolbar }}
                 slotProps={{
-                    toolbar: { setFilter, filter, setInterval, openModal, setClientId },
+                    toolbar: { setFilter, filter, setInterval },
                 }}
                 checkboxSelection
                 components={{
                     Footer: CustomToolbar,
                 }}
             />
-            <Modal
-                open={modalState}
-                onClose={closeModal}
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <AddClient handleClose={closeModal} clientId={clientId} />
-            </Modal>
         </Container>
     );
 };
 
-export function CustomToolbar({ setFilter, filter, setInterval, openModal, setClientId }) {
+export function CustomToolbar({ setFilter, filter, setInterval }) {
     const { anchorEl, openMenu, closeMenu } = useMenu();
     const [dateInterval, setDateInterval] = useState({ from: '', to: '' });
     const [customOption, setCustomOption] = useState(false);
+    const navigate = useNavigate();
 
     const filterOptions = useMemo(
         () => [
@@ -109,21 +99,16 @@ export function CustomToolbar({ setFilter, filter, setInterval, openModal, setCl
                 </Grid>
 
                 <Grid item xs={12} sm='auto'>
-                    <Button variant='contained' fullWidth onClick={openModal}>
-                        Add Client
-                    </Button>
-                </Grid>
-                <Grid item xs={12} sm='auto'>
                     <Button
                         variant='contained'
+                        startIcon={<Add />}
+                        color='secondary'
                         fullWidth
-                        onClick={() => {
-                            setClientId(1);
-                            openModal();
-                        }}>
-                        Edit Client
+                        onClick={() => navigate('/clients/new')}>
+                        New
                     </Button>
                 </Grid>
+
                 <Grid item xs={12} sm='auto'>
                     <IconButton
                         color='text.tertiary'

@@ -9,11 +9,13 @@ const ThemeContextProvider = props => {
                 palette: {
                     primary: {
                         main: '#08090e',
-                        shadow: '#08090e33',
                     },
                     secondary: {
-                        main: '#d92550',
-                        shadow: '#d9255033',
+                        // main: '#e14235',
+                        // main: '#eea031',
+                        // main: '#25859d',
+                        // main: '#0178d6',
+                        main: '#00b4d8',
                     },
                     text: {
                         secondary: '#7B7D95',
@@ -23,6 +25,9 @@ const ThemeContextProvider = props => {
                         // paper: '#FFFFFF',
                         default: '#fafafa',
                         ghostWhite: 'rgb(235 238 244 / 38%)',
+                        dullWhite: '#f8f7f7',
+                        blueWhite: '#f7f7fe',
+                        purpleWhite: '#f1f1fa',
                     },
                     divider: '#e7e3e3',
                     sidebar: {
@@ -55,6 +60,9 @@ const ThemeContextProvider = props => {
                 },
                 typography: {
                     fontFamily: '"Open Sans", sans-serif',
+                    body2: {
+                        fontSize: 13,
+                    },
                 },
                 breakpoints: {
                     keys: ['xs', 'sm', 'md', 'xm', 'lg', 'xl', 'xxl'],
@@ -105,7 +113,87 @@ const ThemeContextProvider = props => {
                             },
                         },
                     },
+
+                    MuiAccordion: {
+                        styleOverrides: {
+                            root: {
+                                backgroundImage: 'none',
+                                backgroundColor: 'transparent',
+                                boxShadow: 'none',
+                                '&.Mui-expanded': {
+                                    margin: 0,
+                                },
+                            },
+                        },
+                    },
+                    MuiAccordionDetails: {
+                        styleOverrides: {
+                            root: {
+                                paddingInline: 0,
+                            },
+                        },
+                    },
+                    MuiAccordionSummary: {
+                        styleOverrides: {
+                            root: ({ theme }) => ({
+                                borderBottom: '1px solid',
+                                borderColor: theme.palette.divider,
+                                minHeight: 0,
+                                padding: 0,
+                                fontSize: '13px',
+                                fontWeight: 600,
+                                color: theme.palette.text.secondary,
+
+                                '&.Mui-expanded.MuiButtonBase-root': {
+                                    minHeight: 0,
+                                },
+                                '&.MuiAccordion-root:before': {
+                                    backgroundColor: 'transparent',
+                                },
+                            }),
+                            content: {
+                                margin: '8px 0px',
+                                '&.Mui-expanded': {
+                                    margin: '8px 0px',
+                                },
+                            },
+                        },
+                    },
+
+                    MuiTable: {
+                        styleOverrides: {
+                            root: ({ theme }) => ({
+                                borderTop: '1px solid',
+                                borderBottom: '1px solid',
+                                borderColor: theme.palette.divider,
+                            }),
+                        },
+                    },
+
+                    MuiTableHead: {
+                        styleOverrides: {
+                            root: ({ theme }) => ({
+                                borderBottom: '1px solid',
+                                borderColor: theme.palette.divider,
+                                backgroundColor: theme.palette.background.blueWhite,
+                            }),
+                        },
+                    },
+
                     MuiSelect: {
+                        variants: [
+                            {
+                                props: { size: 'small' },
+                                style: {
+                                    '& .MuiInputBase-root.MuiOutlinedInput-root': {
+                                        borderRadius: '6px',
+                                    },
+                                    '& .MuiInputBase-input.MuiOutlinedInput-input': {
+                                        paddingBlock: '5.5px',
+                                    },
+                                },
+                            },
+                        ],
                         styleOverrides: {
                             root: {
                                 '& .MuiInputBase-input.MuiOutlinedInput-input': {
@@ -176,19 +264,60 @@ const ThemeContextProvider = props => {
                             },
                         ],
                     },
+
                     MuiButton: {
+                        variants: [
+                            {
+                                props: { color: 'secondary' },
+                                style: {
+                                    color: 'white',
+                                },
+                            },
+                            {
+                                props: { wide: true },
+                                style: {
+                                    paddingInline: '22px',
+                                },
+                            },
+                            {
+                                props: { narrow: true },
+                                style: {
+                                    minWidth: 0,
+                                },
+                            },
+                        ],
                         styleOverrides: {
                             root: {
                                 textTransform: 'none',
                                 fontSize: '13px',
-                                paddingInline: '22px',
+                                borderRadius: '6px',
                             },
                         },
                     },
+
                     MuiTextField: {
+                        variants: [
+                            {
+                                props: { gutterBottom: true },
+                                style: { marginBottom: '16px' },
+                            },
+                            {
+                                props: { size: 'small' },
+                                style: {
+                                    '& .MuiInputBase-root.MuiOutlinedInput-root': {
+                                        borderRadius: '6px',
+                                    },
+                                    '& .MuiInputBase-input.MuiOutlinedInput-input': {
+                                        paddingBlock: '5.5px',
+                                    },
+                                },
+                            },
+                        ],
                         styleOverrides: {
                             root: {
-                                marginBottom: '16px',
+                                'input::placeholder': {
+                                    fontSize: '14px',
+                                },
                                 '& .MuiInputBase-input.MuiOutlinedInput-input': {
                                     paddingBlock: '7px',
                                 },

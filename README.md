@@ -4,6 +4,8 @@ Welcome to the Dashboard 🚀 – A powerful and intuitive data visualization to
 
 ![Alt text](/public/images/preveiw.png)
 
+![Alt text](/public/images/profile.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
