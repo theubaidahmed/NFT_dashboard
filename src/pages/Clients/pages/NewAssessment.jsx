@@ -7,7 +7,7 @@ import { useMessage } from '../../../components/Header';
 import Loading from '../../../components/Loading';
 import { useParams } from 'react-router-dom';
 import { Tab, Tabs } from '../../../styles/tabs';
-import { CheckBox } from '@mui/icons-material';
+import Add from '@mui/icons-material/Add';
 
 function TabPanel(props) {
     const { children, value, index } = props;
@@ -19,11 +19,14 @@ function TabPanel(props) {
     );
 }
 
-const NewClient = () => {
-    const { clientId } = useParams();
+const NewAssessment = () => {
+    const { assessmentId } = useParams();
     const [loading] = useState(false);
     const { showError } = useMessage();
     const [tabSelected, setTabSelected] = useState(0);
+    const [tests, setTests] = useState([
+        { test_administered: '', qutient: '', dev_years: '', dev_months: '' },
+    ]);
     const handleChange = (event, newValue) => {
         setTabSelected(newValue);
     };
@@ -97,6 +100,17 @@ const NewClient = () => {
         handlers.setValues({ [name]: value });
     };
 
+    const addMoreTest = () => {
+        setTests([...tests, { test_administered: '', qutient: '', dev_years: '', dev_months: '' }]);
+    };
+
+    const handleContentChange = (e, i) => {
+        const newValue = e.target.value;
+        const name = e.target.name;
+        tests[i][name] = newValue;
+        setTests([...tests]);
+    };
+
     // const onSubmit = res => {
     //     const { message, success } = res.data;
 
@@ -134,7 +148,7 @@ const NewClient = () => {
             flexDirection='column'
             p={0}>
             <Typography variant='h5' fontWeight={600} color='primary' p={2}>
-                {clientId ? 'Edit Client' : 'New Client'}
+                {assessmentId ? 'Edit Assessment' : 'New Assessment'}
             </Typography>
             <Divider variant='fullWidth' />
             {loading ? (
@@ -143,8 +157,8 @@ const NewClient = () => {
                 <Form
                     handlers={handlers}
                     // onSubmit={onSubmit}
-                    clientId={clientId ? `/admin/plans/${clientId}` : '/admin/plans/'}
-                    method={clientId ? 'patch' : 'post'}
+                    clientId={assessmentId ? `/admin/plans/${assessmentId}` : '/admin/plans/'}
+                    method={assessmentId ? 'patch' : 'post'}
                     onError={onError}
                     style={{ flexGrow: 1, position: 'relative' }}>
                     <Box p={2} display='flex' flexDirection='column' mb={4} overflow='auto'>
@@ -178,19 +192,13 @@ const NewClient = () => {
                                     size='small'
                                     type='date'
                                     sx={{ width: 150, mr: 2 }}
+                                    editable='false'
                                 />
                                 <Input
                                     name='age'
                                     variant='outlined'
                                     size='small'
                                     placeholder='Age'
-                                    sx={{ width: 150, mr: 2 }}
-                                />
-                                <Input
-                                    name='month'
-                                    variant='outlined'
-                                    size='small'
-                                    placeholder='Month'
                                     sx={{ width: 150 }}
                                 />
                             </Grid>
@@ -219,13 +227,30 @@ const NewClient = () => {
                         <Grid container columnSpacing={5} rowSpacing={1} alignItems='center' mb={2}>
                             <Grid item xs={12} lg>
                                 <Typography variant='body2' fontWeight={600}>
-                                    Father name
+                                    Date of Assessment
                                 </Typography>
                             </Grid>
 
                             <Grid item xs={12} lg={10}>
                                 <Input
-                                    name='father_name'
+                                    name='date_of_assessment'
+                                    variant='outlined'
+                                    size='small'
+                                    type='date'
+                                    sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid container columnSpacing={5} rowSpacing={1} alignItems='center' mb={2}>
+                            <Grid item xs={12} lg>
+                                <Typography variant='body2' fontWeight={600}>
+                                    Presenting Complaints
+                                </Typography>
+                            </Grid>
+
+                            <Grid item xs={12} lg={10}>
+                                <Input
+                                    name='presenting_complaints'
                                     variant='outlined'
                                     size='small'
                                     sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
@@ -235,13 +260,13 @@ const NewClient = () => {
                         <Grid container columnSpacing={5} rowSpacing={1} alignItems='center' mb={2}>
                             <Grid item xs={12} lg>
                                 <Typography variant='body2' fontWeight={600}>
-                                    Mother name
+                                    Behavioural Observation
                                 </Typography>
                             </Grid>
 
                             <Grid item xs={12} lg={10}>
                                 <Input
-                                    name='mother_name'
+                                    name='behavioural_observation'
                                     variant='outlined'
                                     size='small'
                                     sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
@@ -251,13 +276,13 @@ const NewClient = () => {
                         <Grid container columnSpacing={5} rowSpacing={1} alignItems='center' mb={2}>
                             <Grid item xs={12} lg>
                                 <Typography variant='body2' fontWeight={600}>
-                                    Client Email
+                                    Test Results
                                 </Typography>
                             </Grid>
 
                             <Grid item xs={12} lg={10}>
                                 <Input
-                                    name='email'
+                                    name='test_results'
                                     variant='outlined'
                                     size='small'
                                     sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
@@ -267,32 +292,39 @@ const NewClient = () => {
                         <Grid container columnSpacing={5} rowSpacing={1} alignItems='center' mb={2}>
                             <Grid item xs={12} lg>
                                 <Typography variant='body2' fontWeight={600}>
-                                    Client Phone
+                                    Impression
                                 </Typography>
                             </Grid>
 
-                            <Grid item xs={12} lg={10} display='flex' spacing={2}>
+                            <Grid item xs={12} lg={10}>
                                 <Input
-                                    name='phone'
+                                    name='impression'
                                     variant='outlined'
-                                    placeholder='Primary'
                                     size='small'
-                                    sx={{ mr: 2, width: 150 }}
+                                    sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
                                 />
+                            </Grid>
+                        </Grid>
+                        <Grid container columnSpacing={5} rowSpacing={1} alignItems='center' mb={2}>
+                            <Grid item xs={12} lg>
+                                <Typography variant='body2' fontWeight={600}>
+                                    Recommendations
+                                </Typography>
+                            </Grid>
+
+                            <Grid item xs={12} lg={10}>
                                 <Input
-                                    name='alternate_phone'
+                                    name='recommendations'
                                     variant='outlined'
-                                    placeholder='Alternate'
                                     size='small'
-                                    sx={{ width: 150 }}
+                                    sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
                                 />
                             </Grid>
                         </Grid>
 
                         <Tabs value={tabSelected} onChange={handleChange} sx={{ mt: 4 }}>
-                            <Tab label='Address' />
-                            <Tab label='Assessment' />
-                            <Tab label='Other Details' />
+                            <Tab label='History' />
+                            <Tab label='Tests' />
                         </Tabs>
                         <Box flexGrow={1} py={2} mb={3}>
                             <TabPanel value={tabSelected} index={0}>
@@ -304,13 +336,13 @@ const NewClient = () => {
                                     mb={2}>
                                     <Grid item xs={12} lg>
                                         <Typography variant='body2' fontWeight={600}>
-                                            Adddress
+                                            Perantal History
                                         </Typography>
                                     </Grid>
 
                                     <Grid item xs={12} lg={10}>
                                         <Input
-                                            name='address'
+                                            name='perantal_history'
                                             variant='outlined'
                                             size='small'
                                             sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
@@ -325,13 +357,76 @@ const NewClient = () => {
                                     mb={2}>
                                     <Grid item xs={12} lg>
                                         <Typography variant='body2' fontWeight={600}>
-                                            Branch
+                                            Family History
                                         </Typography>
                                     </Grid>
 
-                                    <Grid item xs={12} lg={10}>
+                                    <Grid item xs={12} lg={10} display='flex' spacing={2}>
                                         <Input
-                                            name='branch'
+                                            name='family_history'
+                                            variant='outlined'
+                                            size='small'
+                                            sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    container
+                                    columnSpacing={5}
+                                    rowSpacing={1}
+                                    alignItems='center'
+                                    mb={2}>
+                                    <Grid item xs={12} lg>
+                                        <Typography variant='body2' fontWeight={600}>
+                                            Development History
+                                        </Typography>
+                                    </Grid>
+
+                                    <Grid item xs={12} lg={10} display='flex' spacing={2}>
+                                        <Input
+                                            name='development_history'
+                                            variant='outlined'
+                                            size='small'
+                                            sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    container
+                                    columnSpacing={5}
+                                    rowSpacing={1}
+                                    alignItems='center'
+                                    mb={2}>
+                                    <Grid item xs={12} lg>
+                                        <Typography variant='body2' fontWeight={600}>
+                                            School History
+                                        </Typography>
+                                    </Grid>
+
+                                    <Grid item xs={12} lg={10} display='flex' spacing={2}>
+                                        <Input
+                                            name='school_history'
+                                            variant='outlined'
+                                            size='small'
+                                            sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    container
+                                    columnSpacing={5}
+                                    rowSpacing={1}
+                                    alignItems='center'
+                                    mb={2}>
+                                    <Grid item xs={12} lg>
+                                        <Typography variant='body2' fontWeight={600}>
+                                            Development History
+                                        </Typography>
+                                    </Grid>
+
+                                    <Grid item xs={12} lg={10} display='flex' spacing={2}>
+                                        <Input
+                                            name='development_history'
                                             variant='outlined'
                                             size='small'
                                             sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
@@ -346,188 +441,149 @@ const NewClient = () => {
                                     rowSpacing={1}
                                     alignItems='center'
                                     mb={2}>
-                                    <Grid item xs={12} lg>
-                                        <Typography variant='body2' fontWeight={600}>
-                                            Assessment
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} lg={10}>
-                                        <Select
-                                            name='assessment'
-                                            size='small'
-                                            sx={{ width: 316 }}
-                                            displayEmpty
-                                            renderValue={v => (v ? v : 'Select')}
-                                            onChange={customChangeHandler}>
-                                            <MenuItem value='OT'>OT</MenuItem>
-                                            <MenuItem value='BT'>BT</MenuItem>
-                                            <MenuItem value='ST'>ST</MenuItem>
-                                        </Select>
-                                    </Grid>
+                                    {tests.map((test, i) => (
+                                        <React.Fragment key={i}>
+                                            <Grid item xs={12} md={6}>
+                                                <Grid
+                                                    container
+                                                    alignItems='center'
+                                                    spacing={1}
+                                                    mb={2}>
+                                                    <Grid item xs={12} sm lg>
+                                                        <Typography
+                                                            variant='body2'
+                                                            fontWeight={600}>
+                                                            Tests Administered
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm lg={8}>
+                                                        <TextField
+                                                            variant='outlined'
+                                                            size='small'
+                                                            name='test_administered'
+                                                            value={test.test_administered}
+                                                            onChange={e =>
+                                                                handleContentChange(e, i)
+                                                            }
+                                                            sx={{
+                                                                width: {
+                                                                    xs: '100%',
+                                                                    sm: '90%',
+                                                                    lg: '316px',
+                                                                },
+                                                            }}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid
+                                                    container
+                                                    alignItems='center'
+                                                    spacing={1}
+                                                    mb={2}>
+                                                    <Grid item xs={12} sm lg>
+                                                        <Typography
+                                                            variant='body2'
+                                                            fontWeight={600}>
+                                                            Qutient
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm lg={8}>
+                                                        <TextField
+                                                            variant='outlined'
+                                                            size='small'
+                                                            name='qutient'
+                                                            value={test.qutient}
+                                                            onChange={e =>
+                                                                handleContentChange(e, i)
+                                                            }
+                                                            sx={{
+                                                                width: {
+                                                                    xs: '100%',
+                                                                    sm: '90%',
+                                                                    lg: '316px',
+                                                                },
+                                                            }}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid item xs={12} md={6}>
+                                                <Grid
+                                                    container
+                                                    alignItems='center'
+                                                    spacing={1}
+                                                    mb={2}>
+                                                    <Grid item xs={12} sm lg>
+                                                        <Typography
+                                                            variant='body2'
+                                                            fontWeight={600}>
+                                                            Dev.Years
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm lg={8}>
+                                                        <TextField
+                                                            variant='outlined'
+                                                            size='small'
+                                                            name='dev_years'
+                                                            value={test.dev_years}
+                                                            onChange={e =>
+                                                                handleContentChange(e, i)
+                                                            }
+                                                            sx={{
+                                                                width: {
+                                                                    xs: '100%',
+                                                                    sm: '90%',
+                                                                    lg: '316px',
+                                                                },
+                                                            }}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                                <Grid
+                                                    container
+                                                    alignItems='center'
+                                                    spacing={1}
+                                                    mb={2}>
+                                                    <Grid item xs={12} sm lg>
+                                                        <Typography
+                                                            variant='body2'
+                                                            fontWeight={600}>
+                                                            Dev.Months
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid item xs={12} sm lg={8}>
+                                                        <TextField
+                                                            name='dev_months'
+                                                            variant='outlined'
+                                                            size='small'
+                                                            value={test.dev_months}
+                                                            onChange={e =>
+                                                                handleContentChange(e, i)
+                                                            }
+                                                            sx={{
+                                                                width: {
+                                                                    xs: '100%',
+                                                                    sm: '90%',
+                                                                    lg: '316px',
+                                                                },
+                                                            }}
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        </React.Fragment>
+                                    ))}
                                 </Grid>
-                                <Grid
-                                    container
-                                    columnSpacing={5}
-                                    rowSpacing={1}
-                                    alignItems='center'
-                                    mb={2}>
-                                    <Grid item xs={12} lg>
-                                        <Typography variant='body2' fontWeight={600}>
-                                            Slot time
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} lg={10} display='flex' spacing={2}>
-                                        <Input
-                                            name='slot_time_from'
-                                            variant='outlined'
-                                            type='time'
-                                            placeholder='From'
-                                            size='small'
-                                            sx={{ mr: 2, width: 150 }}
-                                        />
-                                        <Input
-                                            name='slot_time_to'
-                                            variant='outlined'
-                                            placeholder='To'
-                                            type='time'
-                                            size='small'
-                                            sx={{ width: 150 }}
-                                        />
-                                    </Grid>
-                                </Grid>
-
-                                <Grid
-                                    container
-                                    columnSpacing={5}
-                                    rowSpacing={1}
-                                    alignItems='center'
-                                    mb={2}>
-                                    <Grid item xs={12} lg>
-                                        <Typography variant='body2' fontWeight={600}>
-                                            Discontinued
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} lg={10}>
-                                        <CheckBox />
-                                    </Grid>
-                                </Grid>
-                            </TabPanel>
-                            <TabPanel value={tabSelected} index={2}>
-                                <Grid
-                                    container
-                                    columnSpacing={5}
-                                    rowSpacing={1}
-                                    alignItems='center'
-                                    mb={2}>
-                                    <Grid item xs={12} lg>
-                                        <Typography variant='body2' fontWeight={600}>
-                                            Therapy
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} lg={10}>
-                                        <Select
-                                            name='therapyselect'
-                                            size='small'
-                                            sx={{ width: 316 }}
-                                            displayEmpty
-                                            renderValue={v => (v ? v : 'Select')}
-                                            onChange={customChangeHandler}>
-                                            <MenuItem value='male'>Male</MenuItem>
-                                            <MenuItem value='female'>Female</MenuItem>
-                                            <MenuItem value='other'>Other</MenuItem>
-                                        </Select>
-                                    </Grid>
-                                </Grid>
-                                <Grid
-                                    container
-                                    columnSpacing={5}
-                                    rowSpacing={1}
-                                    alignItems='center'
-                                    mb={2}>
-                                    <Grid item xs={12} lg>
-                                        <Typography variant='body2' fontWeight={600}>
-                                            Chief Complaints
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} lg={10}>
-                                        <Input
-                                            name='chief_complaints'
-                                            variant='outlined'
-                                            size='small'
-                                            sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Grid
-                                    container
-                                    columnSpacing={5}
-                                    rowSpacing={1}
-                                    alignItems='center'
-                                    mb={2}>
-                                    <Grid item xs={12} lg>
-                                        <Typography variant='body2' fontWeight={600}>
-                                            Diagnosis
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} lg={10}>
-                                        <Input
-                                            name='diagnosis'
-                                            variant='outlined'
-                                            size='small'
-                                            sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Grid
-                                    container
-                                    columnSpacing={5}
-                                    rowSpacing={1}
-                                    alignItems='center'
-                                    mb={2}>
-                                    <Grid item xs={12} lg>
-                                        <Typography variant='body2' fontWeight={600}>
-                                            Remarks
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} lg={10}>
-                                        <Input
-                                            name='remarks'
-                                            variant='outlined'
-                                            size='small'
-                                            sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Grid
-                                    container
-                                    columnSpacing={5}
-                                    rowSpacing={1}
-                                    alignItems='center'
-                                    mb={2}>
-                                    <Grid item xs={12} lg>
-                                        <Typography variant='body2' fontWeight={600}>
-                                            Medical History
-                                        </Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} lg={10}>
-                                        <Input
-                                            name='medical_history'
-                                            variant='outlined'
-                                            size='small'
-                                            multiline
-                                            rows={4}
-                                            sx={{ width: { xs: '100%', sm: '90%', lg: '316px' } }}
-                                        />
-                                    </Grid>
-                                </Grid>
+                                <Divider variant='fullWidth' />
+                                <Box textAlign='center' my={2}>
+                                    <Button
+                                        variant='contained'
+                                        color='secondary'
+                                        startIcon={<Add />}
+                                        onClick={addMoreTest}>
+                                        Add More tests
+                                    </Button>
+                                </Box>
                             </TabPanel>
                         </Box>
                     </Box>
@@ -576,4 +632,4 @@ const NewClient = () => {
     );
 };
 
-export default NewClient;
+export default NewAssessment;

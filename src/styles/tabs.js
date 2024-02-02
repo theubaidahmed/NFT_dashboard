@@ -24,7 +24,7 @@ const Tabs = styled(props => (
 }));
 
 const Tab = styled(props => <MuiTab disableRipple {...props} />)(({ theme }) => ({
-    textTransform: 'none',
+    textTransform: 'capitalize',
     fontWeight: theme.typography.fontWeightRegular,
     fontSize: theme.typography.pxToRem(13),
     marginRight: theme.spacing(1),

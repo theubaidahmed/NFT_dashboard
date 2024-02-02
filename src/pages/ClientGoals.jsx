@@ -4,36 +4,34 @@ import {
     Container,
     IconButton,
     Typography,
+    Grid,
     Menu,
     MenuItem,
     Divider,
     Button,
-    Grid,
-    Modal,
+    Select,
 } from '@mui/material';
-import DataGrid from '../../components/DataGrid';
+import DataGrid from '../components/DataGrid';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { GridToolbarContainer } from '@mui/x-data-grid';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useMenu } from '../../hooks/useMenu';
-import Image from '../../components/Image';
-import SearchBar from '../../components/SearchBar';
-import useModal from '../../hooks/useModal';
-import AddAssessment from './components/AddAssessment';
+import { useMenu } from '../hooks/useMenu';
+import Image from '../components/Image';
+import SearchBar from '../components/SearchBar';
 
 const columns = [
     {
         field: 'id',
-        headerName: 'Client Id',
+        headerName: 'ID',
         sortable: false,
         width: 100,
         valueGetter: params => `${params.row.id + 1}`,
     },
     {
-        field: 'name',
-        headerName: 'Name',
+        field: 'client',
+        headerName: 'Client',
         sortable: false,
         width: 200,
         renderCell: params => (
@@ -45,28 +43,34 @@ const columns = [
     {
         field: 'department',
         headerName: 'Department',
-        width: 200,
-    },
-    {
-        field: 'username',
-        headerName: 'Username',
-        width: 200,
-    },
-    {
-        field: 'assessment',
-        headerName: 'Assessment',
-        width: 200,
-    },
-    {
-        field: 'status',
-        headerName: 'Status',
         width: 250,
     },
-
     {
-        field: 'pdf',
-        headerName: 'PDF',
+        field: 'category',
+        headerName: 'Category',
         width: 150,
+    },
+    {
+        field: 'goal',
+        headerName: 'Goal',
+        width: 150,
+    },
+    {
+        field: 'setDate',
+        headerName: 'Set Date',
+        width: 150,
+        renderCell: params => new Date(params.row.setDate).toLocaleDateString(),
+    },
+    {
+        field: 'targetDate',
+        headerName: 'Target Date',
+        width: 150,
+        renderCell: params => new Date(params.row.targetDate).toLocaleDateString(),
+    },
+    {
+        field: 'remarks',
+        headerName: 'Remarks',
+        width: 300,
     },
 ];
 
@@ -74,11 +78,12 @@ const rows = [
     {
         id: '12',
         client: 'Teja',
-        department: 'None',
-        username: 'admin',
-        assessment: 'BT',
-        status: 'submitted',
-        pdf: 'View PDF',
+        department: 'BT',
+        category: 'Speech',
+        goal: 'Test Goal',
+        setDate: '2024-01-12',
+        targetDate: '2024-01-12',
+        remarks: 'Patient making steady progress.',
     },
 ];
 
@@ -91,16 +96,15 @@ const Index = () => {
         page: 0,
     });
     const [rowCount] = useState(0);
-    const { closeModal, openModal, modalState } = useModal();
 
     return (
         <Container maxWidth='false'>
             <Box pt={3}>
                 <Typography variant='h4' fontWeight={500}>
-                    Assessments
+                    Client Goals
                 </Typography>
                 <Typography variant='body2' color='text.secondary' sx={{ wordSpacing: '2px' }}>
-                    Elevate your assessments with precision.
+                    Empower your clients toward achievement.
                 </Typography>
                 <Divider variant='fullWidth' sx={{ mt: 2, mb: 4 }} />
             </Box>
@@ -117,31 +121,22 @@ const Index = () => {
                 rowCount={rowCount}
                 slots={{ toolbar: CustomToolbar }}
                 slotProps={{
-                    toolbar: { setFilter, filter, setInterval, openModal },
+                    toolbar: { setFilter, filter, setInterval },
                 }}
                 checkboxSelection
                 components={{
                     Footer: CustomToolbar,
                 }}
             />
-            <Modal
-                open={modalState}
-                onClose={closeModal}
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <AddAssessment handleClose={closeModal} />
-            </Modal>
         </Container>
     );
 };
 
-export function CustomToolbar({ setFilter, filter, setInterval, openModal }) {
+export function CustomToolbar({ setFilter, filter, setInterval }) {
     const { anchorEl, openMenu, closeMenu } = useMenu();
     const [dateInterval, setDateInterval] = useState({ from: '', to: '' });
     const [customOption, setCustomOption] = useState(false);
+    const [department, setDepartment] = useState('');
 
     const filterOptions = useMemo(
         () => [
@@ -164,10 +159,18 @@ export function CustomToolbar({ setFilter, filter, setInterval, openModal }) {
                 <Grid item xs>
                     <SearchBar />
                 </Grid>
+
                 <Grid item xs={12} sm='auto'>
-                    <Button variant='contained' fullWidth onClick={openModal}>
-                        Add Assessment
-                    </Button>
+                    <Select
+                        fullWidth
+                        value={department}
+                        displayEmpty
+                        renderValue={v => (v ? v : 'Select Department')}
+                        onChange={e => setDepartment(e.target.value)}>
+                        <MenuItem value='BT'>BT</MenuItem>
+                        <MenuItem value='OT'>OT</MenuItem>
+                        <MenuItem value='ST'>ST</MenuItem>
+                    </Select>
                 </Grid>
 
                 <Grid item xs={12} sm='auto'>

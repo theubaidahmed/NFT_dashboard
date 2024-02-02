@@ -7,147 +7,16 @@ import {
     Button,
     Divider,
     Grid,
-    IconButton,
-    Link,
     Stack,
-    Typography,
+    Link,
     Table,
-    TableHead,
-    TableRow,
     TableBody,
     TableCell,
-    Checkbox,
+    TableHead,
+    TableRow,
+    Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Add from '@mui/icons-material/Add';
-import Close from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { Tabs, Tab } from '../styles/tabs';
-
-function TabPanel(props) {
-    const { children, value, index } = props;
-
-    return (
-        <div role='tabpanel' hidden={value !== index} style={{ height: '100%' }}>
-            {value === index && children}
-        </div>
-    );
-}
-
-const Profile = () => {
-    const [tabSelected, setTabSelected] = useState(0);
-    const handleChange = (event, newValue) => {
-        setTabSelected(newValue);
-    };
-
-    const navigate = useNavigate();
-
-    return (
-        <Grid container sx={{ minHeight: `calc(100vh - 86px)` }}>
-            <Grid item sx={{ display: { xs: 'none', lg: 'block' } }} lg={2}>
-                <Stack
-                    direction='row'
-                    justifyContent='space-between'
-                    bgcolor='background.ghostWhite'
-                    p={2}
-                    borderTop='1px solid'
-                    borderBottom='1px solid'
-                    borderColor='divider'>
-                    <Typography variant='h6' color='primary'>
-                        Clients
-                    </Typography>
-                    <Button
-                        startIcon={<Add />}
-                        variant='contained'
-                        sx={{
-                            minWidth: '40px',
-                            padding: 0,
-                            '& .MuiButton-startIcon': {
-                                margin: 0,
-                            },
-                        }}></Button>
-                </Stack>
-                <Stack
-                    direction='row'
-                    spacing={1}
-                    bgcolor='background.purpleWhite'
-                    py={1}
-                    borderBottom='1px solid'
-                    borderColor='divider'>
-                    <Checkbox size='small' />
-                    <Typography variant='subtitle1' fontWeight='600' color='secondary'>
-                        Alison Parker
-                        <Typography variant='body2' color='text.primary'>
-                            Personal Account
-                        </Typography>
-                    </Typography>
-                </Stack>
-            </Grid>
-            <Grid
-                item
-                xs
-                bgcolor='background.paper'
-                border='1px solid'
-                borderColor='divider'
-                display='flex'
-                flexDirection='column'>
-                <Stack direction='row' m={2} justifyContent='space-between'>
-                    <Typography variant='h6'>Alison Parker</Typography>
-
-                    <Stack direction='row' spacing={1.5} alignItems='flex-start'>
-                        <Button
-                            sx={{
-                                bgcolor: 'background.default',
-                                border: '1px solid',
-                                borderColor: 'divider',
-                            }}
-                            narrow>
-                            Edit
-                        </Button>
-                        <Button
-                            startIcon={<AttachFileIcon fontSize='small' />}
-                            sx={{
-                                bgcolor: 'background.default',
-                                border: '1px solid',
-                                borderColor: 'divider',
-                                minWidth: '35px',
-
-                                '& .MuiButton-startIcon': {
-                                    margin: 0,
-                                },
-                            }}></Button>
-                        <Button variant='contained' color='secondary' sx={{ borderRadius: '6px' }}>
-                            New Transactions
-                        </Button>
-                        <IconButton onClick={() => navigate('/clients')}>
-                            <Close />
-                        </IconButton>
-                    </Stack>
-                </Stack>
-                <Tabs value={tabSelected} onChange={handleChange}>
-                    <Tab label='Overview' />
-                    <Tab label='Comments' />
-                    <Tab label='Transactions' />
-                    <Tab label='Mails' />
-                    <Tab label='Statements' />
-                </Tabs>
-                <Box flexGrow={1}>
-                    <TabPanel value={tabSelected} index={0}>
-                        <Overview />
-                    </TabPanel>
-                </Box>
-                <TabPanel value={tabSelected} index={1}></TabPanel>
-                {/* <TabPanel value={tabSelected} index={2}>
-                    Item Three
-                </TabPanel> */}
-            </Grid>
-        </Grid>
-    );
-};
-
-export default Profile;
 
 const Overview = () => {
     return (
@@ -420,3 +289,5 @@ const Overview = () => {
         </Grid>
     );
 };
+
+export default Overview;

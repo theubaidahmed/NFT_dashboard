@@ -134,7 +134,7 @@ export function CustomToolbar({ setFilter, filter, setInterval }) {
                 </Grid>
 
                 <Grid item xs={12} sm='auto'>
-                    <Button variant='contained' sx={{ width: { xs: '100%', sm: 'auto' } }}>
+                    <Button variant='contained' fullWidth color='secondary'>
                         Download Report
                     </Button>
                 </Grid>

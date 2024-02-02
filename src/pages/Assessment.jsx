@@ -4,33 +4,33 @@ import {
     Container,
     IconButton,
     Typography,
-    Grid,
     Menu,
     MenuItem,
     Divider,
     Button,
+    Grid,
 } from '@mui/material';
-import DataGrid from '../../components/DataGrid';
+import DataGrid from '../components/DataGrid';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { GridToolbarContainer } from '@mui/x-data-grid';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useMenu } from '../../hooks/useMenu';
-import Image from '../../components/Image';
-import SearchBar from '../../components/SearchBar';
+import { useMenu } from '../hooks/useMenu';
+import Image from '../components/Image';
+import SearchBar from '../components/SearchBar';
 
 const columns = [
     {
         field: 'id',
-        headerName: 'Session ID',
+        headerName: 'Client Id',
         sortable: false,
         width: 100,
         valueGetter: params => `${params.row.id + 1}`,
     },
     {
-        field: 'client',
-        headerName: 'Client',
+        field: 'name',
+        headerName: 'Name',
         sortable: false,
         width: 200,
         renderCell: params => (
@@ -40,49 +40,29 @@ const columns = [
         ),
     },
     {
-        field: 'goal',
-        headerName: 'Goal',
-        width: 250,
-    },
-    {
-        field: 'activity',
-        headerName: 'Activity',
-        width: 250,
-    },
-    {
         field: 'department',
         headerName: 'Department',
-        width: 150,
+        width: 200,
     },
     {
-        field: 'createdBy',
-        headerName: 'Created By',
-        width: 150,
+        field: 'username',
+        headerName: 'Username',
+        width: 200,
     },
     {
-        field: 'startTime',
-        headerName: 'Start Time',
-        width: 150,
+        field: 'assessment',
+        headerName: 'Assessment',
+        width: 200,
     },
     {
-        field: 'endTime',
-        headerName: 'End Time',
-        width: 150,
+        field: 'status',
+        headerName: 'Status',
+        width: 250,
     },
+
     {
-        field: 'createdAt',
-        headerName: 'Date',
-        width: 150,
-        renderCell: params => new Date(params.row.createdAt).toLocaleDateString(),
-    },
-    {
-        field: 'observation',
-        headerName: 'Observation',
-        width: 150,
-    },
-    {
-        field: 'video',
-        headerName: 'Video',
+        field: 'pdf',
+        headerName: 'PDF',
         width: 150,
     },
 ];
@@ -90,16 +70,12 @@ const columns = [
 const rows = [
     {
         id: '12',
-        client: 'Haneesh',
-        goal: 'Comprehension of lexical items',
-        activity: 'The child would be shown various picture cards.',
-        department: 'BT',
-        createdBy: 'BT01',
-        startTime: '10:15 p.m',
-        endTime: '10:17 p.m',
-        createdAt: '2022-06-17',
-        observation: 'ttt',
-        video: 'No Video Added',
+        client: 'Teja',
+        department: 'None',
+        username: 'admin',
+        assessment: 'BT',
+        status: 'submitted',
+        pdf: 'View PDF',
     },
 ];
 
@@ -117,10 +93,10 @@ const Index = () => {
         <Container maxWidth='false'>
             <Box pt={3}>
                 <Typography variant='h4' fontWeight={500}>
-                    Session
+                    Assessments
                 </Typography>
                 <Typography variant='body2' color='text.secondary' sx={{ wordSpacing: '2px' }}>
-                    An organized space for scheduling, goals, activity and observation tracking.
+                    Elevate your assessments with precision.
                 </Typography>
                 <Divider variant='fullWidth' sx={{ mt: 2, mb: 4 }} />
             </Box>
@@ -174,19 +150,7 @@ export function CustomToolbar({ setFilter, filter, setInterval }) {
                 <Grid item xs>
                     <SearchBar />
                 </Grid>
-                {/* <Grid item xs={12} sm='auto'>
-                    <Button variant='contained' fullWidth>
-                        Create Session
-                    </Button>
-                </Grid>
-                <Grid item xs={12} sm='auto'>
-                    <Button
-                        variant='contained'
-                        fullWidth
-                       >
-                        Edit Session
-                    </Button>
-                </Grid> */}
+
                 <Grid item xs={12} sm='auto'>
                     <IconButton
                         color='text.tertiary'

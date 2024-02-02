@@ -9,25 +9,21 @@ import {
     MenuItem,
     Divider,
     Button,
-    Select,
-    Modal,
 } from '@mui/material';
-import DataGrid from '../../components/DataGrid';
+import DataGrid from '../components/DataGrid';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { GridToolbarContainer } from '@mui/x-data-grid';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useMenu } from '../../hooks/useMenu';
-import Image from '../../components/Image';
-import SearchBar from '../../components/SearchBar';
-import SetGoal from './components/SetGoal';
-import useModal from '../../hooks/useModal';
+import { useMenu } from '../hooks/useMenu';
+import Image from '../components/Image';
+import SearchBar from '../components/SearchBar';
 
 const columns = [
     {
         field: 'id',
-        headerName: 'ID',
+        headerName: 'Session ID',
         sortable: false,
         width: 100,
         valueGetter: params => `${params.row.id + 1}`,
@@ -44,49 +40,66 @@ const columns = [
         ),
     },
     {
-        field: 'department',
-        headerName: 'Department',
+        field: 'goal',
+        headerName: 'Goal',
         width: 250,
     },
     {
-        field: 'category',
-        headerName: 'Category',
+        field: 'activity',
+        headerName: 'Activity',
+        width: 250,
+    },
+    {
+        field: 'department',
+        headerName: 'Department',
         width: 150,
     },
     {
-        field: 'goal',
-        headerName: 'Goal',
+        field: 'createdBy',
+        headerName: 'Created By',
         width: 150,
     },
     {
-        field: 'setDate',
-        headerName: 'Set Date',
+        field: 'startTime',
+        headerName: 'Start Time',
         width: 150,
-        renderCell: params => new Date(params.row.setDate).toLocaleDateString(),
     },
     {
-        field: 'targetDate',
-        headerName: 'Target Date',
+        field: 'endTime',
+        headerName: 'End Time',
         width: 150,
-        renderCell: params => new Date(params.row.targetDate).toLocaleDateString(),
     },
     {
-        field: 'remarks',
-        headerName: 'Remarks',
-        width: 300,
+        field: 'createdAt',
+        headerName: 'Date',
+        width: 150,
+        renderCell: params => new Date(params.row.createdAt).toLocaleDateString(),
+    },
+    {
+        field: 'observation',
+        headerName: 'Observation',
+        width: 150,
+    },
+    {
+        field: 'video',
+        headerName: 'Video',
+        width: 150,
     },
 ];
 
 const rows = [
     {
         id: '12',
-        client: 'Teja',
+        client: 'Haneesh',
+        goal: 'Comprehension of lexical items',
+        activity: 'The child would be shown various picture cards.',
         department: 'BT',
-        category: 'Speech',
-        goal: 'Test Goal',
-        setDate: '2024-01-12',
-        targetDate: '2024-01-12',
-        remarks: 'Patient making steady progress.',
+        createdBy: 'BT01',
+        startTime: '10:15 p.m',
+        endTime: '10:17 p.m',
+        createdAt: '2022-06-17',
+        observation: 'ttt',
+        video: 'No Video Added',
     },
 ];
 
@@ -99,17 +112,15 @@ const Index = () => {
         page: 0,
     });
     const [rowCount] = useState(0);
-    const [goalId, setGoalId] = useState('');
-    const { openModal, closeModal, modalState } = useModal();
 
     return (
         <Container maxWidth='false'>
             <Box pt={3}>
                 <Typography variant='h4' fontWeight={500}>
-                    Client Goals
+                    Session
                 </Typography>
                 <Typography variant='body2' color='text.secondary' sx={{ wordSpacing: '2px' }}>
-                    Empower your clients toward achievement.
+                    An organized space for scheduling, goals, activity and observation tracking.
                 </Typography>
                 <Divider variant='fullWidth' sx={{ mt: 2, mb: 4 }} />
             </Box>
@@ -126,33 +137,21 @@ const Index = () => {
                 rowCount={rowCount}
                 slots={{ toolbar: CustomToolbar }}
                 slotProps={{
-                    toolbar: { setFilter, filter, setInterval, openModal, setGoalId },
+                    toolbar: { setFilter, filter, setInterval },
                 }}
                 checkboxSelection
                 components={{
                     Footer: CustomToolbar,
                 }}
             />
-
-            <Modal
-                open={modalState}
-                onClose={closeModal}
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <SetGoal handleClose={closeModal} goalId={goalId} />
-            </Modal>
         </Container>
     );
 };
 
-export function CustomToolbar({ setFilter, filter, setInterval, openModal, setGoalId }) {
+export function CustomToolbar({ setFilter, filter, setInterval }) {
     const { anchorEl, openMenu, closeMenu } = useMenu();
     const [dateInterval, setDateInterval] = useState({ from: '', to: '' });
     const [customOption, setCustomOption] = useState(false);
-    const [department, setDepartment] = useState('');
 
     const filterOptions = useMemo(
         () => [
@@ -175,35 +174,19 @@ export function CustomToolbar({ setFilter, filter, setInterval, openModal, setGo
                 <Grid item xs>
                     <SearchBar />
                 </Grid>
-
-                <Grid item xs={12} sm='auto'>
-                    <Select
-                        fullWidth
-                        value={department}
-                        displayEmpty
-                        renderValue={v => (v ? v : 'Select Department')}
-                        onChange={e => setDepartment(e.target.value)}>
-                        <MenuItem value='BT'>BT</MenuItem>
-                        <MenuItem value='OT'>OT</MenuItem>
-                        <MenuItem value='ST'>ST</MenuItem>
-                    </Select>
-                </Grid>
-                <Grid item xs={12} sm='auto'>
-                    <Button variant='contained' fullWidth onClick={openModal}>
-                        Set Goal
+                {/* <Grid item xs={12} sm='auto'>
+                    <Button variant='contained' fullWidth>
+                        Create Session
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm='auto'>
                     <Button
                         variant='contained'
                         fullWidth
-                        onClick={() => {
-                            setGoalId('1');
-                            openModal();
-                        }}>
-                        Edit Goal
+                       >
+                        Edit Session
                     </Button>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} sm='auto'>
                     <IconButton
                         color='text.tertiary'
